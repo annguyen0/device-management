@@ -1,38 +1,17 @@
-import { promises as fs } from 'fs';
-import path from 'path';
-import simpleGit from 'simple-git';
-import chokidar from 'chokidar';
+// Description: This file contains the code to handle requests to the /api/devices endpoint.
 import { MongoClient } from 'mongodb';
 
-const devicesFilePath = path.join(process.cwd(), 'devices.json');
-const git = simpleGit();
 const uri = process.env.MONGODB_URI; // MongoDB connection string
 const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true });
 
 async function connectToDatabase() {
-    if (!client.isConnected()) {
+    if (!client.topology || !client.topology.isConnected()) {
         await client.connect();
     }
     return client.db('device-management').collection('devices');
 }
 
 // Function to commit changes to the repository
-async function commitChanges() {
-    try {
-        await git.add(devicesFilePath);
-        await git.commit(`Update devices.json`);
-        await git.push();
-        console.log('Changes committed and pushed to repository');
-    } catch (error) {
-        console.error('Error committing changes:', error);
-    }
-}
-
-// Watch for changes in devices.json
-chokidar.watch(devicesFilePath).on('change', async (path) => {
-    console.log(`File ${path} has been changed`);
-    await commitChanges();
-});
 
 export default async (req, res) => {
     try {
