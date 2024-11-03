@@ -5,17 +5,17 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Device Management</title>
     <link rel="stylesheet" href="style.css">
-    <script src="script.js"></script>
+    <script src="script.js" defer></script>
 </head>
 <body>
-    <h1>Welcome to Device Management</h1>
+    <h1 style="text-align: center;">Welcome to Device Management</h1>
     <p>This is your GitHub Pages site.</p>
     <nav>
         <ul>
-            <li><a href="#home">Home</a></li>
-            <li><a href="#about">About</a></li>
-            <li><a href="#contact">Contact</a></li>
-            <li><a href="javascript:void(0);" onclick="toggleDeviceList()">Device List</a></li>
+            <li><a href="#home" onclick="showSection('home')">Home</a></li>
+            <li><a href="javascript:void(0);" onclick="showSection('device-list')">Device List</a></li>
+            <li><a href="#about" onclick="showSection('about')">About</a></li>
+            <li><a href="#contact" onclick="showSection('contact')">Contact</a></li>
         </ul>
     </nav>
     <section id="home">
@@ -23,12 +23,12 @@
         <p>Welcome to the Device Management system.</p>
     </section>
 
-    <section id="about">
+    <section id="about" style="display: none;">
         <h2>About</h2>
         <p>Learn more about our device management solutions.</p>
     </section>
 
-    <section id="contact">
+    <section id="contact" style="display: none;">
         <h2>Contact</h2>
         <p>Get in touch with us for more information.</p>
     </section>
@@ -42,22 +42,11 @@
                     <th>Device Name</th>
                     <th>Device Type</th>
                     <th>Status</th>
+                    <th>Actions</th>
                 </tr>
             </thead>
-            <tbody>
-                <tr>
-                    <td>1</td>
-                    <td>Device A</td>
-                    <td>Type 1</td>
-                    <td>Active</td>
-                </tr>
-                <tr>
-                    <td>2</td>
-                    <td>Device B</td>
-                    <td>Type 2</td>
-                    <td>Inactive</td>
-                </tr>
-                <!-- Add more devices as needed -->
+            <tbody id="device-table-body">
+                <!-- Rows will be populated by JavaScript -->
             </tbody>
         </table>
     </section>
