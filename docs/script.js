@@ -3,9 +3,16 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 function fetchDevices() {
+    console.log('Fetching devices...');
     fetch('/api/devices')
-        .then(response => response.json())
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok ' + response.statusText);
+            }
+            return response.json();
+        })
         .then(data => {
+            console.log('Devices fetched:', data);
             const tableBody = document.getElementById('device-table-body');
             tableBody.innerHTML = '';
             data.forEach(device => {
