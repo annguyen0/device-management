@@ -74,9 +74,18 @@ function updateDevice(deviceId, newType, newStatus) {
         },
         body: JSON.stringify({ type: newType, status: newStatus })
     })
-    .then(response => response.json())
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Network response was not ok ' + response.statusText);
+        }
+        return response.json();
+    })
     .then(data => {
         console.log('Device updated:', data);
+        alert('Updated Successfully');
     })
-    .catch(error => console.error('Error updating device:', error));
+    .catch(error => {
+        console.error('Error updating device:', error);
+        alert('Update failed. Please refresh the page');
+    });
 }
