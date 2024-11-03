@@ -20,9 +20,20 @@ function fetchDevices() {
                 row.innerHTML = `
                     <td contenteditable="false">${device.id}</td>
                     <td contenteditable="false">${device.name}</td>
-                    <td contenteditable="false">${device.type}</td>
-                    <td contenteditable="false">${device.status}</td>
-                    <td><button onclick="editRow(this)">Update</button></td>
+                    <td>
+                        <select>
+                            <option value="Type 1" ${device.type === 'Type 1' ? 'selected' : ''}>Type 1</option>
+                            <option value="Type 2" ${device.type === 'Type 2' ? 'selected' : ''}>Type 2</option>
+                            <option value="Type 3" ${device.type === 'Type 3' ? 'selected' : ''}>Type 3</option>
+                        </select>
+                    </td>
+                    <td>
+                        <select>
+                            <option value="Active" ${device.status === 'Active' ? 'selected' : ''}>Active</option>
+                            <option value="Inactive" ${device.status === 'Inactive' ? 'selected' : ''}>Inactive</option>
+                        </select>
+                    </td>
+                    <td><button onclick="saveRow(this)">Save</button></td>
                 `;
                 tableBody.appendChild(row);
             });
@@ -41,57 +52,31 @@ function showSection(sectionId) {
     });
 }
 
-function editRow(button) {
+function saveRow(button) {
     var row = button.parentNode.parentNode;
+    var typeCell = row.cells[2]; // Assuming the type cell is the 3rd cell in the row
     var statusCell = row.cells[3]; // Assuming the status cell is the 4th cell in the row
+    var typeSelect = typeCell.querySelector('select');
+    var statusSelect = statusCell.querySelector('select');
+    var newType = typeSelect.value;
+    var newStatus = statusSelect.value;
+    var deviceId = row.cells[0].textContent;
 
-    if (button.textContent === "Update") {
-        var currentStatus = statusCell.textContent;
-        var select = document.createElement("select");
-        var optionActive = document.createElement("option");
-        optionActive.value = "Active";
-        optionActive.text = "Active";
-        var optionInactive = document.createElement("option");
-        optionInactive.value = "Inactive";
-        optionInactive.text = "Inactive";
-
-        select.appendChild(optionActive);
-        select.appendChild(optionInactive);
-
-        if (currentStatus === "Active") {
-            select.value = "Active";
-        } else {
-            select.value = "Inactive";
-        }
-
-        statusCell.textContent = "";
-        statusCell.appendChild(select);
-        button.textContent = "Save";
-    } else {
-        var select = statusCell.querySelector("select");
-        var newStatus = select.value;
-        statusCell.removeChild(select);
-        statusCell.textContent = newStatus;
-        button.textContent = "Update";
-
-        // Send updated data to the server
-        var deviceId = row.cells[0].textContent;
-        console.log(`Updating device ${deviceId} to status ${newStatus}`);
-        updateDeviceStatus(deviceId, newStatus);
-    }
+    console.log(`Updating device ${deviceId} to type ${newType} and status ${newStatus}`);
+    updateDevice(deviceId, newType, newStatus);
 }
 
-function updateDeviceStatus(deviceId, newStatus) {
+function updateDevice(deviceId, newType, newStatus) {
     fetch(`/api/devices?id=${deviceId}`, {
         method: 'PUT',
         headers: {
             'Content-Type': 'application/json'
         },
-        body: JSON.stringify({ status: newStatus })
+        body: JSON.stringify({ type: newType, status: newStatus })
     })
     .then(response => response.json())
     .then(data => {
-        console.log('Device status updated:', data);
+        console.log('Device updated:', data);
     })
-    .catch(error => console.error('Error updating device status:', error));
+    .catch(error => console.error('Error updating device:', error));
 }
