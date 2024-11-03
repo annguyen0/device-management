@@ -4,54 +4,104 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Device Management</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
     <script src="script.js" defer></script>
+    <style>
+        section {
+            display: none;
+        }
+        section.active {
+            display: block;
+        }
+        .nav-item.home-active .nav-link {
+            background-color: lightblue;
+        }
+    </style>
 </head>
 <body>
-    <h1>Device Management</h1>
-    <nav>
-        <ul>
-            <li><a href="#home" onclick="showSection('home')">Home</a></li>
-            <li><a href="javascript:void(0);" onclick="showSection('device-list')">Device List</a></li>
-            <li><a href="#about" onclick="showSection('about')">About</a></li>
-            <li><a href="#contact" onclick="showSection('contact')">Contact</a></li>
-        </ul>
-    </nav>
-    <section id="home">
-        <h2>Home</h2>
-        <p>Welcome to the Device Management system.</p>
-    </section>
+    <div class="container">
+        <h1 class="text-center my-4">Device Management</h1>
+        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item home-tab"><a class="nav-link" href="#home" onclick="showSection('home')">Home</a></li>
+                <li class="nav-item"><a class="nav-link" href="#device-list" onclick="showSection('device-list')">Device List</a></li>
+                <li class="nav-item"><a class="nav-link" href="#about" onclick="showSection('about')">About</a></li>
+                <li class="nav-item"><a class="nav-link" href="#contact" onclick="showSection('contact')">Contact</a></li>
+            </ul>
+        </nav>
+        <section id="home" class="active">
+            <h2>Home</h2>
+            <p>Welcome to the Device Management system.</p>
+        </section>
 
-    <section id="about" style="display: none;">
-        <h2>About</h2>
-        <p>Learn more about our device management solutions.</p>
-    </section>
+        <section id="about">
+            <h2>About</h2>
+            <p>Learn more about our device management solutions.</p>
+        </section>
 
-    <section id="contact" style="display: none;">
-        <h2>Contact</h2>
-        <p>Get in touch with us for more information.</p>
-    </section>
+        <section id="contact">
+            <h2>Contact</h2>
+            <p>Get in touch with us for more information.</p>
+        </section>
 
-    <section id="device-list">
-        <div id="status-message" style="display: none; padding: 10px; margin-bottom: 10px;"></div>
-        <table>
-            <thead>
-                <tr>
-                    <th>Device ID</th>
-                    <th>Device Name</th>
-                    <th>Device Type</th>
-                    <th>Status</th>
-                    <th>Actions</th>
-                </tr>
-            </thead>
-            <tbody id="device-table-body">
-                <!-- Rows will be populated by JavaScript -->
-            </tbody>
-        </table>
-    </section>
+        <section id="device-list">
+            <div id="status-message" class="alert" style="display: none;"></div>
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Device ID</th>
+                        <th>Device Name</th>
+                        <th>Device Type</th>
+                        <th>Status</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody id="device-table-body">
+                    <!-- Rows will be populated by JavaScript -->
+                </tbody>
+            </table>
+        </section>
 
-    <footer>
-        <p>&copy; 2023 Device Management. All rights reserved.</p>
-    </footer>
+        <footer class="text-center mt-4">
+            <p>&copy; 2023 Device Management. All rights reserved.</p>
+        </footer>
+    </div>
+
+    <!-- Bootstrap JS and dependencies -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const hash = window.location.hash.substring(1);
+            if (hash) {
+                showSection(hash);
+            } else {
+                showSection('home');
+            }
+        });
+
+        function showSection(sectionId) {
+            const sections = document.querySelectorAll('section');
+            sections.forEach(section => {
+                section.classList.remove('active');
+            });
+            document.getElementById(sectionId).classList.add('active');
+
+            const navItems = document.querySelectorAll('.nav-item');
+            navItems.forEach(item => {
+                item.classList.remove('home-active');
+            });
+
+            if (sectionId === 'home') {
+                document.querySelector('.home-tab').classList.add('home-active');
+            }
+
+            // Update the URL hash
+            window.location.hash = sectionId;
+        }
+    </script>
 </body>
 </html>

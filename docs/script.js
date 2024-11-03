@@ -18,22 +18,22 @@ function fetchDevices() {
             data.forEach(device => {
                 const row = document.createElement('tr');
                 row.innerHTML = `
-                    <td contenteditable="false">${device.id}</td>
-                    <td contenteditable="false">${device.name}</td>
+                    <td>${device.id}</td>
+                    <td>${device.name}</td>
                     <td>
-                        <select>
+                        <select class="form-control">
                             <option value="Type 1" ${device.type === 'Type 1' ? 'selected' : ''}>Type 1</option>
                             <option value="Type 2" ${device.type === 'Type 2' ? 'selected' : ''}>Type 2</option>
                             <option value="Type 3" ${device.type === 'Type 3' ? 'selected' : ''}>Type 3</option>
                         </select>
                     </td>
                     <td>
-                        <select>
+                        <select class="form-control">
                             <option value="Active" ${device.status === 'Active' ? 'selected' : ''}>Active</option>
                             <option value="Inactive" ${device.status === 'Inactive' ? 'selected' : ''}>Inactive</option>
                         </select>
                     </td>
-                    <td><button onclick="saveRow(this)">Save</button></td>
+                    <td><button class="btn btn-primary" onclick="saveRow(this)">Save</button></td>
                 `;
                 tableBody.appendChild(row);
             });
@@ -42,25 +42,34 @@ function fetchDevices() {
 }
 
 function showSection(sectionId) {
-    var sections = document.querySelectorAll('section');
-    sections.forEach(function(section) {
-        if (section.id === sectionId) {
-            section.style.display = 'block';
-        } else {
-            section.style.display = 'none';
-        }
+    const sections = document.querySelectorAll('section');
+    sections.forEach(section => {
+        section.classList.remove('active');
     });
+    document.getElementById(sectionId).classList.add('active');
+
+    const navItems = document.querySelectorAll('.nav-item');
+    navItems.forEach(item => {
+        item.classList.remove('home-active');
+    });
+
+    if (sectionId === 'home') {
+        document.querySelector('.home-tab').classList.add('home-active');
+    }
+
+    // Update the URL hash
+    window.location.hash = sectionId;
 }
 
 function saveRow(button) {
-    var row = button.parentNode.parentNode;
-    var typeCell = row.cells[2]; // Assuming the type cell is the 3rd cell in the row
-    var statusCell = row.cells[3]; // Assuming the status cell is the 4th cell in the row
-    var typeSelect = typeCell.querySelector('select');
-    var statusSelect = statusCell.querySelector('select');
-    var newType = typeSelect.value;
-    var newStatus = statusSelect.value;
-    var deviceId = row.cells[0].textContent;
+    const row = button.parentNode.parentNode;
+    const typeCell = row.cells[2]; // Assuming the type cell is the 3rd cell in the row
+    const statusCell = row.cells[3]; // Assuming the status cell is the 4th cell in the row
+    const typeSelect = typeCell.querySelector('select');
+    const statusSelect = statusCell.querySelector('select');
+    const newType = typeSelect.value;
+    const newStatus = statusSelect.value;
+    const deviceId = row.cells[0].textContent;
 
     console.log(`Updating device ${deviceId} to type ${newType} and status ${newStatus}`);
     updateDevice(deviceId, newType, newStatus);
@@ -94,8 +103,7 @@ function showStatusMessage(message, type) {
     const statusMessage = document.getElementById('status-message');
     statusMessage.textContent = message;
     statusMessage.style.display = 'block';
-    statusMessage.style.backgroundColor = type === 'success' ? 'green' : 'red';
-    statusMessage.style.color = 'white';
+    statusMessage.className = `alert alert-${type === 'success' ? 'success' : 'danger'}`;
     setTimeout(() => {
         statusMessage.style.display = 'none';
     }, 3000);
