@@ -1,7 +1,9 @@
 import { promises as fs } from 'fs';
 import path from 'path';
+import simpleGit from 'simple-git';
 
 const devicesFilePath = path.join(process.cwd(), 'devices.json');
+const git = simpleGit();
 
 export default async (req, res) => {
     if (req.method === 'GET') {
@@ -16,6 +18,12 @@ export default async (req, res) => {
         if (device) {
             device.status = status;
             await fs.writeFile(devicesFilePath, JSON.stringify(devices, null, 2));
+
+            // Commit changes to the repository
+            await git.add(devicesFilePath);
+            await git.commit(`Update status of device ${id} to ${status}`);
+            await git.push();
+
             res.status(200).json(device);
         } else {
             res.status(404).json({ error: 'Device not found' });
