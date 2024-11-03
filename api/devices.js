@@ -10,7 +10,9 @@ const uri = process.env.MONGODB_URI; // MongoDB connection string
 const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true });
 
 async function connectToDatabase() {
-    if (!client.isConnected()) await client.connect();
+    if (!client.isConnected()) {
+        await client.connect();
+    }
     return client.db('device-management').collection('devices');
 }
 
