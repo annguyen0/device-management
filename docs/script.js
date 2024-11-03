@@ -16,29 +16,40 @@ function fetchDevices() {
             const tableBody = document.getElementById('device-table-body');
             tableBody.innerHTML = '';
             data.forEach(device => {
-                const row = document.createElement('tr');
-                row.innerHTML = `
-                    <td>${device.id}</td>
-                    <td>${device.name}</td>
-                    <td>
-                        <select class="form-control">
-                            <option value="Type 1" ${device.type === 'Type 1' ? 'selected' : ''}>Type 1</option>
-                            <option value="Type 2" ${device.type === 'Type 2' ? 'selected' : ''}>Type 2</option>
-                            <option value="Type 3" ${device.type === 'Type 3' ? 'selected' : ''}>Type 3</option>
-                        </select>
-                    </td>
-                    <td>
-                        <select class="form-control">
-                            <option value="Active" ${device.status === 'Active' ? 'selected' : ''}>Active</option>
-                            <option value="Inactive" ${device.status === 'Inactive' ? 'selected' : ''}>Inactive</option>
-                        </select>
-                    </td>
-                    <td><button class="btn btn-primary" onclick="saveRow(this)">Save</button></td>
-                `;
+                const row = createDeviceRow(device);
                 tableBody.appendChild(row);
             });
         })
         .catch(error => console.error('Error fetching devices:', error));
+}
+
+function createDeviceRow(device) {
+    const row = document.createElement('tr');
+    row.innerHTML = `
+        <td>${device.id}</td>
+        <td><input type="text" value="${device.name}" class="form-control"></td>
+        <td>
+            <select class="form-control">
+                <option value="Type 1" ${device.type === 'Type 1' ? 'selected' : ''}>Type 1</option>
+                <option value="Type 2" ${device.type === 'Type 2' ? 'selected' : ''}>Type 2</option>
+                <option value="Type 3" ${device.type === 'Type 3' ? 'selected' : ''}>Type 3</option>
+            </select>
+        </td>
+        <td>
+            <select class="form-control">
+                <option value="Active" ${device.status === 'Active' ? 'selected' : ''}>Active</option>
+                <option value="Inactive" ${device.status === 'Inactive' ? 'selected' : ''}>Inactive</option>
+            </select>
+        </td>
+        <td><button class="btn btn-primary" onclick="saveRow(this)">Save</button></td>
+    `;
+    return row;
+}
+
+function addNewDevice() {
+    const tableBody = document.getElementById('device-table-body');
+    const newRow = createDeviceRow({ id: '', name: '', type: 'Type 1', status: 'Active' });
+    tableBody.appendChild(newRow);
 }
 
 function showSection(sectionId) {
@@ -63,25 +74,26 @@ function showSection(sectionId) {
 
 function saveRow(button) {
     const row = button.parentNode.parentNode;
-    const typeCell = row.cells[2]; // Assuming the type cell is the 3rd cell in the row
-    const statusCell = row.cells[3]; // Assuming the status cell is the 4th cell in the row
-    const typeSelect = typeCell.querySelector('select');
-    const statusSelect = statusCell.querySelector('select');
-    const newType = typeSelect.value;
-    const newStatus = statusSelect.value;
-    const deviceId = row.cells[0].textContent;
+    const idCell = row.cells[0];
+    const nameCell = row.cells[1].querySelector('input');
+    const typeCell = row.cells[2].querySelector('select');
+    const statusCell = row.cells[3].querySelector('select');
+    const deviceId = idCell.textContent || null;
+    const newName = nameCell.value;
+    const newType = typeCell.value;
+    const newStatus = statusCell.value;
 
-    console.log(`Updating device ${deviceId} to type ${newType} and status ${newStatus}`);
-    updateDevice(deviceId, newType, newStatus);
+    console.log(`Updating device ${deviceId} to name ${newName}, type ${newType}, and status ${newStatus}`);
+    updateDevice(deviceId, newName, newType, newStatus);
 }
 
-function updateDevice(deviceId, newType, newStatus) {
+function updateDevice(deviceId, newName, newType, newStatus) {
     fetch(`/api/devices?id=${deviceId}`, {
         method: 'PUT',
         headers: {
             'Content-Type': 'application/json'
         },
-        body: JSON.stringify({ type: newType, status: newStatus })
+        body: JSON.stringify({ id: deviceId, name: newName, type: newType, status: newStatus })
     })
     .then(response => {
         if (!response.ok) {
