@@ -11,6 +11,16 @@ async function connectToDatabase() {
     return client.db('devices_vercel').collection('devices list');
 }
 
+async function getNextSequenceValue(sequenceName) {
+    const collection = client.db('your-database-name').collection('counters');
+    const sequenceDocument = await collection.findOneAndUpdate(
+        { _id: sequenceName },
+        { $inc: { sequence_value: 1 } },
+        { returnOriginal: false, upsert: true }
+    );
+    return sequenceDocument.value.sequence_value;
+}
+
 export default async (req, res) => {
     try {
         const collection = await connectToDatabase();

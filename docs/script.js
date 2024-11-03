@@ -26,8 +26,8 @@ function fetchDevices() {
 function createDeviceRow(device) {
     const row = document.createElement('tr');
     row.innerHTML = `
-        <td>${device.id}</td>
-        <td><input type="text" value="${device.name}" class="form-control"></td>
+        <td>${device.id || ''}</td>
+        <td><input type="text" value="${device.name || ''}" class="form-control"></td>
         <td>
             <select class="form-control">
                 <option value="Type 1" ${device.type === 'Type 1' ? 'selected' : ''}>Type 1</option>
@@ -84,7 +84,11 @@ function saveRow(button) {
     const newStatus = statusCell.value;
 
     console.log(`Updating device ${deviceId} to name ${newName}, type ${newType}, and status ${newStatus}`);
-    updateDevice(deviceId, newName, newType, newStatus);
+    if (deviceId) {
+        updateDevice(deviceId, newName, newType, newStatus);
+    } else {
+        createDevice(newName, newType, newStatus);
+    }
 }
 
 function updateDevice(deviceId, newName, newType, newStatus) {
@@ -108,6 +112,31 @@ function updateDevice(deviceId, newName, newType, newStatus) {
     .catch(error => {
         console.error('Error updating device:', error);
         showStatusMessage('Update failed. Please refresh the page', 'error');
+    });
+}
+
+function createDevice(newName, newType, newStatus) {
+    fetch('/api/devices', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ name: newName, type: newType, status: newStatus })
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Network response was not ok ' + response.statusText);
+        }
+        return response.json();
+    })
+    .then(data => {
+        console.log('Device created:', data);
+        showStatusMessage('Created Successfully', 'success');
+        fetchDevices(); // Refresh the device list
+    })
+    .catch(error => {
+        console.error('Error creating device:', error);
+        showStatusMessage('Creation failed. Please refresh the page', 'error');
     });
 }
 
