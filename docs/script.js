@@ -4,8 +4,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
 function fetchDevices() {
     console.log('Fetching devices...');
-    const vercelAppUrl = window.VERCEL_APP_URL;
-    fetch(`${vercelAppUrl}/api/devices`)
+    fetch('/api/devices')
         .then(response => {
             if (!response.ok) {
                 throw new Error('Network response was not ok ' + response.statusText);
@@ -83,8 +82,7 @@ function editRow(button) {
 }
 
 function updateDeviceStatus(deviceId, newStatus) {
-    const vercelAppUrl = window.VERCEL_APP_URL;
-    fetch(`${vercelAppUrl}/api/devices?id=${deviceId}`, {
+    fetch(`/api/devices?id=${deviceId}`, {
         method: 'PUT',
         headers: {
             'Content-Type': 'application/json'
