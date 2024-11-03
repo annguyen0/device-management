@@ -82,10 +82,21 @@ function updateDevice(deviceId, newType, newStatus) {
     })
     .then(data => {
         console.log('Device updated:', data);
-        alert('Updated Successfully');
+        showStatusMessage('Updated Successfully', 'success');
     })
     .catch(error => {
         console.error('Error updating device:', error);
-        alert('Update failed. Please refresh the page');
+        showStatusMessage('Update failed. Please refresh the page', 'error');
     });
+}
+
+function showStatusMessage(message, type) {
+    const statusMessage = document.getElementById('status-message');
+    statusMessage.textContent = message;
+    statusMessage.style.display = 'block';
+    statusMessage.style.backgroundColor = type === 'success' ? 'green' : 'red';
+    statusMessage.style.color = 'white';
+    setTimeout(() => {
+        statusMessage.style.display = 'none';
+    }, 3000);
 }
