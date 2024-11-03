@@ -6,60 +6,69 @@
     <title>Device Management</title>
     <!-- Bootstrap CSS -->
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome CSS -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
     <script src="script.js" defer></script>
 </head>
 <body>
     <div class="container">
-        <div class="row">
-            <div class="col-12">
-                <h1 class="text-center my-4">Device Management</h1>
-                <nav class="navbar navbar-expand-lg navbar-light bg-light">
-                    <ul class="navbar-nav mr-auto">
-                        <li class="nav-item home-tab"><a class="nav-link" href="#home" onclick="showSection('home')">Home</a></li>
-                        <li class="nav-item"><a class="nav-link" href="#device-list" onclick="showSection('device-list')">Device List</a></li>
-                        <li class="nav-item"><a class="nav-link" href="#about" onclick="showSection('about')">About</a></li>
-                        <li class="nav-item"><a class="nav-link" href="#contact" onclick="showSection('contact')">Contact</a></li>
-                    </ul>
-                </nav>
-                <section id="home" class="active">
-                    <h2>Home</h2>
-                    <p>Welcome to the Device Management system.</p>
-                </section>
+        <header>
+            <h1>Device Management</h1>
+            <nav>
+                <ul>
+                    <li class="home-tab">
+                        <a href="#home" onclick="showSection('home')">
+                            <i class="fas fa-home"></i> Home
+                        </a>
+                    </li>
+                    <li><a href="#device-list" onclick="showSection('device-list')">Device List</a></li>
+                    <li><a href="#about" onclick="showSection('about')">
+                        <i class="fas fa-info-circle"></i> About
+                    </a></li>
+                    <li><a href="#contact" onclick="showSection('contact')">
+                        <i class="fas fa-envelope"></i> Contact
+                    </a></li>
+                </ul>
+            </nav>
+        </header>
+        <main>
+            <section id="home" class="active">
+                <h2>Home</h2>
+                <p>Welcome to the Device Management system.</p>
+            </section>
 
-                <section id="about">
-                    <h2>About</h2>
-                    <p>Learn more about our device management solutions.</p>
-                </section>
+            <section id="about">
+                <h2>About</h2>
+                <p>Learn more about our device management solutions.</p>
+            </section>
 
-                <section id="contact">
-                    <h2>Contact</h2>
-                    <p>Get in touch with us for more information.</p>
-                </section>
+            <section id="contact">
+                <h2>Contact</h2>
+                <p>Get in touch with us for more information.</p>
+            </section>
 
-                <section id="device-list">
-                    <div id="status-message" class="alert" style="display: none;"></div>
-                    <table class="table table-striped">
-                        <thead>
-                            <tr>
-                                <th>Device ID</th>
-                                <th>Device Name</th>
-                                <th>Device Type</th>
-                                <th>Status</th>
-                                <th>Actions</th>
-                            </tr>
-                        </thead>
-                        <tbody id="device-table-body">
-                            <!-- Rows will be populated by JavaScript -->
-                        </tbody>
-                    </table>
-                </section>
-
-                <footer class="text-center mt-4">
-                    <p>&copy; 2023 Device Management. All rights reserved.</p>
-                </footer>
-            </div>
-        </div>
+            <section id="device-list">
+                <div id="status-message" class="alert" style="display: none;"></div>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Device ID</th>
+                            <th>Device Name</th>
+                            <th>Device Type</th>
+                            <th>Status</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="device-table-body">
+                        <!-- Rows will be populated by JavaScript -->
+                    </tbody>
+                </table>
+            </section>
+        </main>
+        <footer>
+            <p>&copy; 2023 Device Management. All rights reserved.</p>
+        </footer>
     </div>
 
     <!-- Bootstrap JS and dependencies -->

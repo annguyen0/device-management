@@ -5,15 +5,56 @@ body {
     background-color: #f8f9fa;
 }
 
+.grid-container {
+    display: grid;
+    grid-template-columns: 1fr 3fr 1fr;
+    gap: 20px;
+    padding: 20px;
+}
+
+.ads-left, .ads-right {
+    background-color: #e9ecef;
+    padding: 20px;
+    text-align: center;
+}
+
+.main-content {
+    background-color: white;
+    padding: 2px;
+    border-radius: 5px;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+header {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+header h1 {
+    margin: 0;
+    padding: 20px 0;
+    background-color: #007bff;
+    color: white;
+    border-radius: 5px;
+}
+
 nav ul {
     list-style-type: none;
     padding: 0;
-    background-color: #333;
+    background-color: #f8f9fa;
     overflow: hidden;
+    display: flex;
+    justify-content: center;
+    margin: 0;
 }
 
 nav ul li {
-    float: left;
+    margin: 0 10px;
 }
 
 nav ul li a {
@@ -22,20 +63,26 @@ nav ul li a {
     text-align: center;
     padding: 14px 16px;
     text-decoration: none;
+    border-radius: 5px;
+    background-color: lightblue;
 }
 
 nav ul li a:hover {
-    background-color: #111;
+    background-color: #007bff;
 }
 
 footer {
     text-align: center;
-    padding: 10px;
+    padding: 5px;
     background-color: #333;
     color: white;
     position: fixed;
-    width: 100%;
+    width: 1160px;
     bottom: 0;
+}
+
+main {
+    padding-bottom: 60px; /* Space for the fixed footer */
 }
 
 section {
@@ -47,13 +94,18 @@ section.active {
     display: block;
 }
 
-.nav-item .nav-link {
-    background-color: lightblue;
+.table-hover tbody tr:hover {
+    background-color: #f1f1f1;
+}
+
+#status-message {
+    margin-bottom: 20px;
 }
 
 table {
     width: 100%;
     border-collapse: collapse;
+    margin-top: 20px;
 }
 
 table, th, td {
