@@ -2,17 +2,20 @@ body {
     font-family: Arial, sans-serif;
     margin: 0;
     padding: 0;
-    background-color: #f4f4f4;
+    background-color: #f8f9fa;
 }
+
 nav ul {
     list-style-type: none;
     padding: 0;
     background-color: #333;
     overflow: hidden;
 }
+
 nav ul li {
     float: left;
 }
+
 nav ul li a {
     display: block;
     color: white;
@@ -20,9 +23,11 @@ nav ul li a {
     padding: 14px 16px;
     text-decoration: none;
 }
+
 nav ul li a:hover {
     background-color: #111;
 }
+
 footer {
     text-align: center;
     padding: 10px;
@@ -32,20 +37,34 @@ footer {
     width: 100%;
     bottom: 0;
 }
+
 section {
     padding: 20px;
+    display: none;
 }
+
+section.active {
+    display: block;
+}
+
+.nav-item .nav-link {
+    background-color: lightblue;
+}
+
 table {
     width: 100%;
     border-collapse: collapse;
 }
+
 table, th, td {
     border: 1px solid black;
 }
+
 th, td {
     padding: 8px;
     text-align: left;
 }
+
 th {
     background-color: #f2f2f2;
 }
