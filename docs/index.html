@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Device Management</title>
     <link rel="stylesheet" href="style.css">
+    <script src="script.js"></script>
 </head>
 <body>
     <h1>Welcome to Device Management</h1>
@@ -14,7 +15,7 @@
             <li><a href="#home">Home</a></li>
             <li><a href="#about">About</a></li>
             <li><a href="#contact">Contact</a></li>
-            <li><a href="#device-list">Device List</a></li>
+            <li><a href="javascript:void(0);" onclick="toggleDeviceList()">Device List</a></li>
         </ul>
     </nav>
     <section id="home">
@@ -32,7 +33,7 @@
         <p>Get in touch with us for more information.</p>
     </section>
 
-    <section id="device-list">
+    <section id="device-list" style="display: none;">
         <h2>Device List</h2>
         <table>
             <thead>
