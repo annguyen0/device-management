@@ -10,5 +10,36 @@
         "name": "Device B",
         "type": "Type 2",
         "status": "Inactive"
-    }
+    } 
+,
+{
+    "id": 3,
+    "name": "Device C",
+    "type": "Type 1",
+    "status": "Active"
+},
+{
+    "id": 4,
+    "name": "Device D",
+    "type": "Type 3",
+    "status": "Inactive"
+},
+{
+    "id": 5,
+    "name": "Device E",
+    "type": "Type 2",
+    "status": "Active"
+},
+{
+    "id": 6,
+    "name": "Device F",
+    "type": "Type 1",
+    "status": "Inactive"
+},
+{
+    "id": 7,
+    "name": "Device G",
+    "type": "Type 3",
+    "status": "Active"
+}
 ]

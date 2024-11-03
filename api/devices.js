@@ -1,9 +1,28 @@
 import { promises as fs } from 'fs';
 import path from 'path';
 import simpleGit from 'simple-git';
+import chokidar from 'chokidar';
 
 const devicesFilePath = path.join(process.cwd(), 'devices.json');
 const git = simpleGit();
+
+// Function to commit changes to the repository
+async function commitChanges() {
+    try {
+        await git.add(devicesFilePath);
+        await git.commit(`Update devices.json`);
+        await git.push();
+        console.log('Changes committed and pushed to repository');
+    } catch (error) {
+        console.error('Error committing changes:', error);
+    }
+}
+
+// Watch for changes in devices.json
+chokidar.watch(devicesFilePath).on('change', async (event, path) => {
+    console.log(`File ${path} has been changed`);
+    await commitChanges();
+});
 
 export default async (req, res) => {
     try {
@@ -23,13 +42,6 @@ export default async (req, res) => {
                 device.status = status;
                 await fs.writeFile(devicesFilePath, JSON.stringify(devices, null, 2));
                 console.log(`Device ${id} status updated to ${status}`);
-
-                // Commit changes to the repository
-                await git.add(devicesFilePath);
-                await git.commit(`Update status of device ${id} to ${status}`);
-                await git.push();
-                console.log('Changes committed and pushed to repository');
-
                 res.status(200).json(device);
             } else {
                 res.status(404).json({ error: 'Device not found' });

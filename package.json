@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "dependencies": {
     "express": "^4.17.1",
-    "simple-git": "^2.47.0"
+    "simple-git": "^2.47.0",
+    "chokidar": "^3.5.3"
   }
 }
