@@ -19,7 +19,7 @@ async function commitChanges() {
 }
 
 // Watch for changes in devices.json
-chokidar.watch(devicesFilePath).on('change', async (event, path) => {
+chokidar.watch(devicesFilePath).on('change', async (path) => {
     console.log(`File ${path} has been changed`);
     await commitChanges();
 });
@@ -35,15 +35,19 @@ export default async (req, res) => {
             console.log('PUT request received');
             const { id } = req.query;
             const { status } = req.body;
+            console.log(`Request to update device ${id} with status ${status}`);
             const data = await fs.readFile(devicesFilePath, 'utf-8');
             const devices = JSON.parse(data);
+            console.log('Current devices:', devices);
             const device = devices.find(d => d.id === parseInt(id));
             if (device) {
                 device.status = status;
                 await fs.writeFile(devicesFilePath, JSON.stringify(devices, null, 2));
                 console.log(`Device ${id} status updated to ${status}`);
+                await commitChanges();
                 res.status(200).json(device);
             } else {
+                console.log(`Device ${id} not found`);
                 res.status(404).json({ error: 'Device not found' });
             }
         } else {

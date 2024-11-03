@@ -76,12 +76,13 @@ function editRow(button) {
 
         // Send updated data to the server
         var deviceId = row.cells[0].textContent;
+        console.log(`Updating device ${deviceId} to status ${newStatus}`);
         updateDeviceStatus(deviceId, newStatus);
     }
 }
 
 function updateDeviceStatus(deviceId, newStatus) {
-    fetch(`/api/devices/${deviceId}`, {
+    fetch(`/api/devices?id=${deviceId}`, {
         method: 'PUT',
         headers: {
             'Content-Type': 'application/json'
