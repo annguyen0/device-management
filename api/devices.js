@@ -8,10 +8,8 @@ async function connectToDatabase() {
     if (!client.topology || !client.topology.isConnected()) {
         await client.connect();
     }
-    return client.db('device-management').collection('devices');
+    return client.db('devices_vercel').collection('devices list');
 }
-
-// Function to commit changes to the repository
 
 export default async (req, res) => {
     try {
