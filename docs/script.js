@@ -92,7 +92,7 @@ function saveRow(button) {
 }
 
 function updateDevice(deviceId, newName, newType, newStatus) {
-    fetch(`/api/devices?id=${deviceId}`, {
+    fetch(`/api/devices`, {
         method: 'PUT',
         headers: {
             'Content-Type': 'application/json'
