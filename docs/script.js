@@ -127,6 +127,7 @@ function createDevice(newName, newType, newStatus) {
         body: JSON.stringify({ name: newName, type: newType, status: newStatus })
     })
     .then(response => {
+        console.log('Response status:', response.status);
         if (!response.ok) {
             throw new Error('Network response was not ok ' + response.statusText);
         }

@@ -60,7 +60,7 @@ export default async (req, res) => {
 
             const result = await collection.insertOne(newDevice);
             console.log('Device created:', result.ops[0]);
-            res.status(201).json(result.ops[0]);
+            res.status(201).json(result.ops[0]); // Ensure status 201 is returned
         } else if (req.method === 'GET') {
             console.log('GET request received');
             const devices = await collection.find({}).toArray();
