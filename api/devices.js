@@ -79,6 +79,18 @@ export default async (req, res) => {
                 console.log(`Device ${id} not found`);
                 res.status(404).json({ error: 'Device not found' });
             }
+        } else if (req.method === 'DELETE') {
+            console.log('DELETE request received');
+            const { id } = req.query;
+            console.log(`Request to delete device ${id}`);
+            const result = await collection.deleteOne({ id: parseInt(id) });
+            if (result.deletedCount > 0) {
+                console.log(`Device ${id} deleted`);
+                res.status(200).json({ id: parseInt(id) });
+            } else {
+                console.log(`Device ${id} not found`);
+                res.status(404).json({ error: 'Device not found' });
+            }
         } else {
             res.status(405).json({ error: 'Method not allowed' });
         }

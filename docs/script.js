@@ -41,7 +41,10 @@ function createDeviceRow(device) {
                 <option value="Inactive" ${device.status === 'Inactive' ? 'selected' : ''}>Inactive</option>
             </select>
         </td>
-        <td><button class="btn btn-primary" onclick="saveRow(this)">Save</button></td>
+        <td>
+            <button class="btn btn-primary" onclick="saveRow(this)">Save</button>
+            <button class="btn btn-danger" onclick="deleteRow(this)">Delete</button>
+        </td>
     `;
     return row;
 }
@@ -138,6 +141,39 @@ function createDevice(newName, newType, newStatus) {
         console.error('Error creating device:', error);
         showStatusMessage('Creation failed. Please refresh the page', 'error');
     });
+}
+
+function deleteDevice(deviceId) {
+    fetch(`/api/devices?id=${deviceId}`, {
+        method: 'DELETE',
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Network response was not ok ' + response.statusText);
+        }
+        return response.json();
+    })
+    .then(data => {
+        console.log('Device deleted:', data);
+        showStatusMessage('Deleted Successfully', 'success');
+        fetchDevices(); // Refresh the device list
+    })
+    .catch(error => {
+        console.error('Error deleting device:', error);
+        showStatusMessage('Deletion failed. Please refresh the page', 'error');
+    });
+}
+
+function deleteRow(button) {
+    const row = button.parentNode.parentNode;
+    const idCell = row.cells[0];
+    const deviceId = idCell.textContent;
+    if (deviceId) {
+        deleteDevice(deviceId);
+    }
 }
 
 function showStatusMessage(message, type) {
