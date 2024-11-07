@@ -21,6 +21,14 @@ async function getNextSequenceValue(sequenceName) {
     return sequenceDocument.value.sequence_value;
 }
 
+async function updateSequenceValue(sequenceName, newValue) {
+    const collection = client.db('devices_vercel').collection('counters');
+    await collection.updateOne(
+        { _id: sequenceName },
+        { $set: { sequence_value: newValue } }
+    );
+}
+
 export default async (req, res) => {
     try {
         const collection = await connectToDatabase();
@@ -28,12 +36,28 @@ export default async (req, res) => {
         if (req.method === 'POST') {
             console.log('POST request received');
             const { name, type, status } = req.body;
+
+            // Generate a new unique ID
+            let newId;
+            let isUnique = false;
+            while (!isUnique) {
+                newId = await getNextSequenceValue('deviceId');
+                const existingDevice = await collection.findOne({ id: newId });
+                if (!existingDevice) {
+                    isUnique = true;
+                }
+            }
+
+            // Update the new ID in the counters collection
+            await updateSequenceValue('deviceId', newId);
+
             const newDevice = {
-                id: await getNextSequenceValue('deviceId'),
+                id: newId,
                 name,
                 type,
                 status
             };
+
             const result = await collection.insertOne(newDevice);
             console.log('Device created:', result.ops[0]);
             res.status(201).json(result.ops[0]);
