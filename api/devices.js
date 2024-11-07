@@ -4,15 +4,20 @@ import { MongoClient } from 'mongodb';
 const uri = process.env.MONGODB_URI; // MongoDB connection string
 const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true });
 
+let db;
+
 async function connectToDatabase() {
-    if (!client.topology || !client.topology.isConnected()) {
-        await client.connect();
+    if (!db) {
+        if (!client.topology || !client.topology.isConnected()) {
+            await client.connect();
+        }
+        db = client.db('devices_vercel');
     }
-    return client.db('devices_vercel').collection('devices list');
+    return db;
 }
 
 async function getNextSequenceValue(sequenceName) {
-    const collection = client.db('devices_vercel').collection('counters');
+    const collection = db.collection('counters');
     const sequenceDocument = await collection.findOneAndUpdate(
         { _id: sequenceName },
         { $inc: { sequence_value: 1 } },
@@ -22,7 +27,7 @@ async function getNextSequenceValue(sequenceName) {
 }
 
 async function updateSequenceValue(sequenceName, newValue) {
-    const collection = client.db('devices_vercel').collection('counters');
+    const collection = db.collection('counters');
     await collection.updateOne(
         { _id: sequenceName },
         { $set: { sequence_value: newValue } }
@@ -31,7 +36,8 @@ async function updateSequenceValue(sequenceName, newValue) {
 
 export default async (req, res) => {
     try {
-        const collection = await connectToDatabase();
+        const db = await connectToDatabase();
+        const collection = db.collection('devices list');
 
         if (req.method === 'POST') {
             console.log('POST request received');
@@ -96,6 +102,6 @@ export default async (req, res) => {
         }
     } catch (error) {
         console.error('Error handling request:', error);
-        res.status(500).json({ error: 'Internal Server Error' });
+        res.status(500).json({ error: 'Internal Server Error', details: error.message });
     }
 };

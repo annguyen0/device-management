@@ -43,7 +43,7 @@ function createDeviceRow(device) {
         </td>
         <td>
             <button class="btn btn-primary" onclick="saveRow(this)">Save</button>
-            <button class="btn btn-danger" onclick="deleteRow(this)">Delete</button>
+            ${device.id ? '<button class="btn btn-danger" onclick="deleteRow(this)">Delete</button>' : ''}
         </td>
     `;
     return row;
@@ -141,12 +141,14 @@ function createDevice(newName, newType, newStatus) {
     .then(data => {
         console.log('Device created:', data);
         showStatusMessage('Created Successfully', 'success');
-        fetchDevices(); // Refresh the device list
+        // Introduce a slight delay before fetching the updated device list
+        setTimeout(fetchDevices, 500); // 500 milliseconds delay
     })
     .catch(error => {
         console.error('Error creating device:', error);
         showStatusMessage('Creation failed. Please refresh the page', 'error');
-        fetchDevices()
+        // Introduce a slight delay before fetching the updated device list
+        setTimeout(fetchDevices, 500); // 500 milliseconds delay
     });
 }
 
