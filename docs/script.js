@@ -104,13 +104,16 @@ function updateDevice(deviceId, newName, newType, newStatus) {
     })
     .then(response => {
         if (!response.ok) {
-            throw new Error('Network response was not ok ' + response.statusText);
+            return response.json().then(errorData => {
+                throw new Error('Network response was not ok ' + response.statusText + ': ' + errorData.error);
+            });
         }
         return response.json();
     })
     .then(data => {
         console.log('Device updated:', data);
         showStatusMessage('Updated Successfully', 'success');
+        fetchDevices(); // Refresh the device list
     })
     .catch(error => {
         console.error('Error updating device:', error);
