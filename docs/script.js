@@ -146,6 +146,7 @@ function createDevice(newName, newType, newStatus) {
     .catch(error => {
         console.error('Error creating device:', error);
         showStatusMessage('Creation failed. Please refresh the page', 'error');
+        fetchDevices()
     });
 }
 
