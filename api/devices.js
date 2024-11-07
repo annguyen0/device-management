@@ -12,7 +12,7 @@ async function connectToDatabase() {
 }
 
 async function getNextSequenceValue(sequenceName) {
-    const collection = client.db('your-database-name').collection('counters');
+    const collection = client.db('devices_vercel').collection('counters');
     const sequenceDocument = await collection.findOneAndUpdate(
         { _id: sequenceName },
         { $inc: { sequence_value: 1 } },
