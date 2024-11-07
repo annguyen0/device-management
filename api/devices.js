@@ -25,7 +25,19 @@ export default async (req, res) => {
     try {
         const collection = await connectToDatabase();
 
-        if (req.method === 'GET') {
+        if (req.method === 'POST') {
+            console.log('POST request received');
+            const { name, type, status } = req.body;
+            const newDevice = {
+                id: await getNextSequenceValue('deviceId'),
+                name,
+                type,
+                status
+            };
+            const result = await collection.insertOne(newDevice);
+            console.log('Device created:', result.ops[0]);
+            res.status(201).json(result.ops[0]);
+        } else if (req.method === 'GET') {
             console.log('GET request received');
             const devices = await collection.find({}).toArray();
             console.log('Devices fetched from database:', devices);
