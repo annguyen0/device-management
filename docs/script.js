@@ -81,7 +81,7 @@ function saveRow(button) {
     const nameCell = row.cells[1].querySelector('input');
     const typeCell = row.cells[2].querySelector('select');
     const statusCell = row.cells[3].querySelector('select');
-    const deviceId = idCell.textContent || null;
+    const deviceId = idCell.textContent.trim(); // Trim any whitespace
     const newName = nameCell.value;
     const newType = typeCell.value;
     const newStatus = statusCell.value;
@@ -129,7 +129,9 @@ function createDevice(newName, newType, newStatus) {
     .then(response => {
         console.log('Response status:', response.status);
         if (!response.ok) {
-            throw new Error('Network response was not ok ' + response.statusText);
+            return response.json().then(errorData => {
+                throw new Error('Network response was not ok ' + response.statusText + ': ' + errorData.error);
+            });
         }
         return response.json();
     })
