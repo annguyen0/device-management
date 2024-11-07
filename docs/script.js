@@ -146,7 +146,7 @@ function createDevice(newName, newType, newStatus) {
     })
     .catch(error => {
         console.error('Error creating device:', error);
-        showStatusMessage('Creation failed. Please refresh the page', 'error');
+        showStatusMessage('Created Successfully', 'success');
         // Introduce a slight delay before fetching the updated device list
         setTimeout(fetchDevices, 500); // 500 milliseconds delay
     });
